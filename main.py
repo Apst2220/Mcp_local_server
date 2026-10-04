@@ -31,6 +31,16 @@ def add_expense(date, amount, category, subcategory="", note=""):
             (date, amount, category, subcategory, note)
         )
         return {"status": "ok", "id": cur.lastrowid}
+
+@mcp.tool()
+def delete_expense(date, amount, category):
+    '''Delete an expense entry from the database.'''
+    with sqlite3.connect(DB_PATH) as c:
+        cur = c.execute(
+            "DELETE FROM expenses WHERE date = ? AND amount = ? AND category = ?",
+            (date, amount, category)
+        )
+        return {"status": "ok", "id": cur.lastrowid}    
     
 @mcp.tool()
 def list_expenses(start_date, end_date):
